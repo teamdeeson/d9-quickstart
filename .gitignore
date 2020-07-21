@@ -37,6 +37,7 @@ drush/contrib
 ######################
 *.log
 *.sql
+!.mariadb-init/startup.sql
 
 # OS generated files #
 ######################

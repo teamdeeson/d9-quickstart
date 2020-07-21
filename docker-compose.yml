@@ -14,8 +14,7 @@ services:
 #      - "3307:3306"
     volumes:
       - mariadb:/var/lib/mysql
-#      - ./.mariadb-init:/docker-entrypoint-initdb.d # A starter database is inside here.
-#      - .persist/mysql:/var/lib/mysql:delegated # I want to manage volumes manually.
+      - ./.mariadb-init:/docker-entrypoint-initdb.d # A starter database is inside here.
     networks:
       - default
 
@@ -38,33 +37,34 @@ services:
       PHP_XDEBUG: 1
       PHP_XDEBUG_DEFAULT_ENABLE: 1
       PHP_XDEBUG_REMOTE_CONNECT_BACK: 0         # This is needed to respect remote.host setting bellow
-      #PHP_XDEBUG_REMOTE_HOST: host.docker.internal # Docker 18.03+ Mac/Win
+      PHP_XDEBUG_REMOTE_HOST: host.docker.internal # Docker 18.03+ Mac/Win
       #PHP_XDEBUG_REMOTE_HOST: 172.17.0.1 # Linux
-      PHP_XDEBUG_REMOTE_HOST: 10.254.254.254 # macOS, Docker < 18.03, You will also need to 'sudo ifconfig lo0 alias 10.254.254.254'
+      #PHP_XDEBUG_REMOTE_HOST: 10.254.254.254 # macOS, Docker < 18.03, You will also need to 'sudo ifconfig lo0 alias 10.254.254.254'
       #PHP_XDEBUG_REMOTE_HOST: 10.0.75.1 # Windows, Docker < 18.03
       #PHP_XDEBUG_REMOTE_LOG: /tmp/php-xdebug.log
     volumes:
       - ./:/var/www/html:delegated
-      - ./.persist/public:/var/www/html/docroot/sites/default/files:delegated
-      - ./.persist/private:/private:delegated
+      - public:/var/www/html/docroot/sites/default/files:rw
+      - private:/private:rw
     tmpfs: /tmp
     networks:
       - default
 
   nginx:
-    image: wodby/nginx:1.17-5.5.0
+    image: wodby/nginx:1.19-5.10.2
     container_name: "${PROJECT_NAME}_nginx"
     depends_on:
       - php
     environment:
       NGINX_STATIC_CONTENT_OPEN_FILE_CACHE: "off"
+      NGINX_STATIC_404_TRY_INDEX: 1 # Needed for Stage file proxy to work
       NGINX_ERROR_LOG_LEVEL: debug
       NGINX_BACKEND_HOST: php
       NGINX_SERVER_ROOT: /var/www/html/docroot
-      NGINX_VHOST_PRESET: drupal8
+      NGINX_VHOST_PRESET: drupal9
     volumes:
       - ./:/var/www/html:delegated
-      - ./.persist/public:/var/www/html/docroot/sites/default/files:delegated
+      - public:/var/www/html/docroot/sites/default/files:cached
     tmpfs: /tmp
     networks:
       - default
@@ -80,7 +80,7 @@ services:
     environment:
       SOLR_HEAP: 1024m
     volumes:
-      - ./.persist/solr:/opt/solr/server/solr/core1:delegated
+      - solr:/opt/solr/server/solr/core1:rw
     networks:
       - default
       - proxy
@@ -162,3 +162,6 @@ networks:
 
 volumes:
   mariadb:
+  public:
+  private:
+  solr:

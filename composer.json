@@ -84,6 +84,7 @@
         "[project-root]/.editorconfig": false,
         "[web-root]/sites/default/settings.php": "src/settings/settings.php",
         "[web-root]/sites/default/services.yml": "src/settings/services.yml",
+        "[web-root]/sites/development.services.yml": "src/settings/development.services.yml",
         "[web-root]/.htaccess": "src/settings/htaccess",
         "[web-root]/robots.txt": "src/settings/robots.txt"
       }

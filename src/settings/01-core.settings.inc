@@ -481,8 +481,14 @@ $settings['trusted_host_patterns'] = array_map(function($d){return '^' . preg_qu
 #   include __DIR__ . '/settings.local.php';
 # }
 
+/**
+ * Allow test modules and themes to be installed.
+ *
+ * Drupal ignores test modules and themes by default for performance reasons.
+ * During development it can be useful to install test extensions for debugging
+ * purposes.
+ */
 $settings['extension_discovery_scan_tests'] = FALSE;
-
 
 /**
  * Do not check certain directories for Drupal files.
@@ -492,3 +498,13 @@ $settings['file_scan_ignore_directories'] = [
   'node_modules',
   'bower_components',
 ];
+
+/*
+ * Enable access to rebuild.php.
+ *
+ * This setting can be enabled to allow Drupal's php and database cached
+ * storage to be cleared via the rebuild.php page. Access to this page can also
+ * be gained by generating a query string from rebuild_token_calculator.sh and
+ * using these parameters in a request to rebuild.php.
+ */
+$settings['rebuild_access'] = FALSE;
