@@ -46,8 +46,7 @@ $settings['install_profile'] = 'minimal';
  *   $settings['hash_salt'] = file_get_contents('/home/example/salt.txt');
  * @endcode
  */
-//$settings['hash_salt'] = !empty($settings['hash_salt']) ? $settings['hash_salt'] : getenv('DRUPAL_HASH_SALT');
-$settings['hash_salt'] = 'ygJtSKgSoogN2OPL234hG0OG0b-x8tUKMsmuGLEFkjrv655tJJeeTMZ0OC4DczADPMHh9wzO-g';
+$settings['hash_salt'] = !empty($settings['hash_salt']) ? $settings['hash_salt'] : getenv('DRUPAL_HASH_SALT');
 
 /**
  * Deployment identifier.

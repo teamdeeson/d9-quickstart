@@ -1,7 +1,7 @@
-# Drupal 8
-The preferred way to manage Drupal 8 sites is to use composer, and the Drupal Composer project helps integrate Drupal core with composer.
+# Drupal 9
+The preferred way to manage Drupal 9 sites is to use composer, and the Drupal Composer project helps integrate Drupal core with composer.
 
-This repository provides a quick start wrapper around Drupal Composer and includes common configuration and recommended modules for Deeson Drupal 8 projects.
+This repository provides a quick start wrapper around Drupal Composer and includes common configuration and recommended modules for Deeson Drupal 9 projects.
 
 Quick-start projects use composer for dependency management, including Drupal core, contrib and 3rd party libraries. The contents of docroot/ should be considered expendable during development and can be recompiled from the contents of the repository.
 
@@ -19,7 +19,7 @@ First you need to [install composer](https://getcomposer.org/doc/00-intro.md#ins
 Then you can create a new project using composer, keep the project name short and without punctuation (e.g. myproject)
 
 ```bash
-composer create-project teamdeeson/d8-quickstart <project-name> --stability dev --no-interaction
+composer create-project teamdeeson/d9-quickstart <project-name> --stability dev --no-interaction
 ```
 
 You should now create a new git repository, and commit all files not excluded by the .gitignore file.
@@ -30,24 +30,27 @@ git add .
 git commit -m "Created the project."
 ```
 
+Create yourself a starter environment config.
+
+```bash
+cp .env.example .env
+```
+
 ### Required configuration
 You should check through all of the services and settings files and make any required amendments. The following amendments need to be made at a minimum:
 
-`.env:` Add your project name in here, use the same one as used with composer (e.g. myproject)
+`.env:` Add your project name in here, use the same one as used with composer (e.g. myproject) and make up a salt string.
 
 `src/settings/environment.inc:` Configure your domain names
 
-
-`src/settings/01-core.settings.inc:` Configure a hash salt. 
-
-`src/settings/02-shield.settings.inc:` Configure basic-auth access details to protect your dev sites.
+`src/settings/02-shield.settings.inc:` Configure basic-auth access details to protect your dev sites (Acquia only)
 
 ## Build and install
 At Deeson we use Makefiles to orchestrate any additional tasks such as building dependencies and running tests.
 
 This ensures we have a universal mechanism for task running across all of our projects.
 
-The project can be built using the included Makefile.
+The project can now be built for the first time using the included Makefile
 
 ```bash
 make
@@ -55,14 +58,6 @@ make
 will build the project based on the assumed environment. This will create the `docroot/` folder and build your website.
 
 You can specify the environment explicitly with the ENVIRONMENT variable which will add or remove dev dependencies:
-
-```bash
-make build ENVIRONMENT=dev
-```
-
-```bash
-make build ENVIRONMENT=prod
-```
 
 You can also safely remove your docroot at any point if you need to:
 
@@ -75,7 +70,6 @@ Once you have run the build for the first time, you can setup and run your Docke
 ```
 make start
 ```
-
 
 You should now have several running docker containers, including nginx, php, mariadb. Run the following command to check this.
 
@@ -111,10 +105,10 @@ You should now be able to access a vanilla Drupal site at [https://d8-quickstart
 If you want to use other browsers you have to add an entry to your `/etc/hosts` file:
 
 ```
-127.0.0.1 d8-quickstart.localhost
+127.0.0.1 d9-quickstart.localhost
 ```
 
-You can now run the Drupal installation, either through the interface or from the command line using:
+If you want to rerun the installation process you can use:
 
 ```bash
 make install
@@ -204,12 +198,7 @@ Anything within `src/modules/` will be made available in `docroot/modules/custom
 You can define your services YAML files here.
 
 #### src/settings/
-This contains the Drupal site settings, extracted from settings.php as per:
-http://handbook.deeson.co.uk/development/drupal8/#settings-file-configuration
-
-This has been moved from either sites/default/settings/ or sites/conf/ mentioned in the blog post.
-
-settings.php will be made available in `docroot/sites/default/`. All other files will be included in-place by settings.php.
+This contains the Drupal site settings, extracted from settings.php.
 
 #### src/themes/
 This is where you place your custom theme(s).
