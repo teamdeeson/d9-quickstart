@@ -24,6 +24,7 @@ services:
     environment:
       DOCKER_LOCAL: 1
       D4D_HOSTNAME: ${PROJECT_BASE_URL}
+      DRUPAL_HASH_SALT: ${DRUPAL_HASH_SALT}
       PHP_SENDMAIL_PATH: /usr/sbin/sendmail -t -i -S mailhog:1025
       DB_HOST: mariadb
       DB_USER: drupal
@@ -44,8 +45,7 @@ services:
       #PHP_XDEBUG_REMOTE_LOG: /tmp/php-xdebug.log
     volumes:
       - ./:/var/www/html:delegated
-      - public:/var/www/html/docroot/sites/default/files:rw
-      - private:/private:rw
+      - files:/mnt/files
     tmpfs: /tmp
     networks:
       - default
@@ -64,7 +64,7 @@ services:
       NGINX_VHOST_PRESET: drupal9
     volumes:
       - ./:/var/www/html:delegated
-      - public:/var/www/html/docroot/sites/default/files:cached
+      - files:/mnt/files
     tmpfs: /tmp
     networks:
       - default
@@ -74,20 +74,16 @@ services:
       - 'traefik.port=80'
       - 'traefik.frontend.rule=Host:${PROJECT_BASE_URL}'
 
-  solr:
-    image: wodby/drupal-solr:8-6.4-2.0.0
-    container_name: "${PROJECT_NAME}_solr"
-    environment:
-      SOLR_HEAP: 1024m
-    volumes:
-      - solr:/opt/solr/server/solr/core1:rw
-    networks:
-      - default
-      - proxy
-    labels:
-      - 'traefik.docker.network=proxy'
-      - 'traefik.port=8983'
-      - 'traefik.frontend.rule=Host:solr.${PROJECT_BASE_URL}'
+#  solr:
+#    image: wodby/solr:8-4.6.1
+#    container_name: "${PROJECT_NAME}_solr"
+#    environment:
+#      SOLR_DEFAULT_CONFIG_SET: search_api_solr_4.0
+#      SOLR_HEAP: 1024m
+#    labels:
+#      - 'traefik.docker.network=proxy'
+#      - 'traefik.port=8983'
+#      - 'traefik.frontend.rule=Host:solr.${PROJECT_BASE_URL}'
 
   mailhog:
     image: mailhog/mailhog
@@ -162,6 +158,4 @@ networks:
 
 volumes:
   mariadb:
-  public:
-  private:
-  solr:
+  files:

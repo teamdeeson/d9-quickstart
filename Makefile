@@ -109,26 +109,14 @@ clean: stop
 # Generate project symlinks and other disposable assets and wiring.
 #
 
-.persist/public:
-ifeq ("${USE_DOCKER}","1")
-	mkdir -p .persist/public
-endif
-
-.persist/private:
-ifeq ("${USE_DOCKER}","1")
-	mkdir -p .persist/private
-endif
-
 .env:
 	cp .env.example .env
 
-docroot/sites/default/files/:
+public-file-store:
 ifeq ("${USE_DOCKER}","1")
-	ln -s ../../../.persist/public docroot/sites/default/files
+	@test -d docroot/sites/default/files && rm -rf docroot/sites/default/files ||:
+	@ln -sfn /mnt/files/public docroot/sites/default/files
 endif
-
-docroot/sites/default/files/tmp/:
-	mkdir -p docroot/sites/default/files/tmp/
 
 docroot/sites/default/settings.php:
 	ln -s ../../../src/settings/settings.php docroot/sites/default/settings.php
@@ -147,9 +135,8 @@ docroot/profiles/custom:
 #
 
 composer--post-install-cmd: composer--post-update-cmd
-composer--post-update-cmd: .persist/public \
-                                .persist/private \
-                                docroot/sites/default/settings.php \
+composer--post-update-cmd: docroot/sites/default/settings.php \
+                                public-file-store \
                                 docroot/modules/custom \
                                 docroot/themes/custom;
 
