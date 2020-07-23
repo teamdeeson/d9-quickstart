@@ -41,7 +41,7 @@ endif
 
 update:
 ifeq ("${USE_DOCKER}","1")
-	docker run --rm --interactive --tty --volume $(PWD):/app  --volume $(PWD)/.persist/composer:/tmp composer update
+	docker run --rm --interactive --tty --volume $(PWD):/app  --volume $(PWD)/.persist/composer:/tmp wodby/drupal-php:7.3-dev /bin/bash -c "composer global require hirak/prestissimo; composer update"
 else
 	composer update
 endif
