@@ -1,7 +1,8 @@
 # Drupal 9
-The preferred way to manage Drupal 9 sites is to use composer, and the Drupal Composer project helps integrate Drupal core with composer. 
 
-This project is known to work with MacOSX and Linux but it is not tested on others.  It probably does not work on Windows.
+This project is a tool for quickly bootstrapping a Drupal 9 website using the standards and best practice of the [Deeson](https://www.deeson.co.uk) web development agency.
+
+This project works with MacOSX and Linux but it is not tested on other operating systems.  It probably does not work on Windows.
 
 ## Dependencies
 
@@ -10,9 +11,9 @@ This project is known to work with MacOSX and Linux but it is not tested on othe
 * [Composer](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx).
 * [Deeson Docker proxy](https://github.com/teamdeeson/docker-proxy)
 
-## Creating a new Drupal site
+## Creating a new Drupal 9 site
 
-Then you can create a new project using composer, keep the project name short and without punctuation (e.g. myproject)
+Use the following command to create a new Drupal 9 project. Replace `<project-name>` with your own name.  Keep the project name short and without punctuation (e.g. myproject)
 
 ```bash
 composer create-project teamdeeson/d9-quickstart <project-name> --stability dev --no-interaction
@@ -29,7 +30,7 @@ git commit -m "Created the project."
 
 ### Required configuration
 
-The following amendments need to be made at a minimum:
+You should configure the project for your needs now. The following amendments need to be made at a minimum:
 
 `.env:` Change the PROJECT_NAME and PROJECT_BASE_URL for your project (the url must end in .localhost). Make up a new HASH_SALT string.
 
@@ -47,17 +48,17 @@ make
 
 This will create the `docroot/` folder and build your website.
 
-It should finish with a one time login URL which you can copy into the chrome browser to access your new Drupal site.
+It should finish with a one time login URL which you can copy into the Chrome web browser to access your new Drupal site.
 
 ## Starting and stopping the project.
 
-Once you have run the build for the first time, you can stop the project any time by running:
+Once you have run the build for the first time, you can stop the project any time with:
 
 ```
 make stop
 ```
 
-The project can then be started again later with:
+The project starts again using:
 
 ```
 make start
@@ -76,11 +77,13 @@ You can access localhost domains in Chrome without making any changes.  If you w
 All of your dependencies should be managed through composer. This includes any off-the-shelf code such as Drupal core, contrib modules and themes, and any 3rd party libraries.
 
 ### To add a module (e.g. redirect):
+
 ```bash
 composer require drupal/redirect
 ```
 
 ### To update a module (e.g. redirect):
+
 ```bash
 composer update drupal/redirect
 ```
