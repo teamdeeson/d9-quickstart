@@ -224,6 +224,8 @@ Note that this method is up to 33% faster than the drush method `pv database_exp
 
 # Known issues
 
+## Deeson Docker Proxy not running.
+
 `ERROR: Network proxy declared as external, but could not be found. Please create the network manually using 'docker network create proxy' and try again.`
 
 The Docker proxy needs to be running. See dependencies above. 
