@@ -1,5 +1,7 @@
 # Drupal 9
-The preferred way to manage Drupal 9 sites is to use composer, and the Drupal Composer project helps integrate Drupal core with composer. This README describes the approach and some dependencies.
+The preferred way to manage Drupal 9 sites is to use composer, and the Drupal Composer project helps integrate Drupal core with composer. 
+
+This project is known to work with MacOSX and Linux but it is not tested on others.  It probably does not work on Windows.
 
 ## Dependencies
 
@@ -16,18 +18,20 @@ Then you can create a new project using composer, keep the project name short an
 composer create-project teamdeeson/d9-quickstart <project-name> --stability dev --no-interaction
 ```
 
-You should now create a new git repository, and commit all files not excluded by the .gitignore file.
+You should now switch to the project directory and create a new git repository, and commit all files not excluded by the .gitignore file.
 
-```bash
+```
+cd <project-name>
 git init
 git add .
 git commit -m "Created the project."
 ```
 
 ### Required configuration
-You should check through all of the services and settings files and make any required amendments. The following amendments need to be made at a minimum:
 
-`.env:` Change the PROJECT_NAME and PROJECT_BASE_URL for your new project (the url must end in .localhost). Make up a new HASH_SALT string.
+The following amendments need to be made at a minimum:
+
+`.env:` Change the PROJECT_NAME and PROJECT_BASE_URL for your project (the url must end in .localhost). Make up a new HASH_SALT string.
 
 `src/settings/environment.inc:` Configure your domain names here if you know what the remote ones are going to be.
 
@@ -59,36 +63,12 @@ The project can then be started again later with:
 make start
 ```
 
-## Docker commands
+## Browser access
 
-You should now have several running docker containers, including nginx, php, mariadb. Run the following command to check this.
-
-```
-docker-compose ps
-```
-
-You can access the realtime logs from these with:
-
-```
-make logs
-```
-
-or the logs from a specific container with:
-
-```
-docker-compose logs php -f
-```
-
-You can access localhost domains in Chrome without makeing any changes.  If you want to use other browsers you have to add an entry to your `/etc/hosts` file for this project (replace project url with your url):
+You can access localhost domains in Chrome without making any changes.  If you want to use other browsers you have to add an entry to your `/etc/hosts` file for this project (replace project url with your url):
 
 ```
 127.0.0.1 project.localhost
-```
-
-If you want to delete the site and rerun the installation process you can use:
-
-```bash
-make clean && make install
 ```
 
 ## Managing dependencies with composer
@@ -189,29 +169,46 @@ This is the composer vendor directory, which contains project dependencies, tool
 ### web/
 This and `docroot/` are symlinked to the same location for wider compatibility and should also be excluded from your repository.
 
-# Helpful Docker commands
+# Docker commands
+
+You should now have several running docker containers, including nginx, php, mariadb. Run the following command to check this.
+
+```
+docker-compose ps
+```
+
+You can access the realtime logs from these with:
+
+```
+make logs
+```
+
+or the logs from a specific container with:
+
+```
+docker-compose logs php -f
+```
+
+If you want to delete the site and rerun the installation process you can use:
+
+```bash
+make clean && make install
+```
 
 You can use the docker-compose tool as a shortcut for common docker commands. To run a command within one of the containers you can use:
-```bash
+```
 docker-compose exec <container-name> <command>
 ```
+
 For example to start a mysql client on the database container (mariadb) run:
-```bash
-docker-compose exec mariadb mysql
 ```
-
-You can also use the more standard docker commands.
-
-To list the active Docker instances run the following in the project root directory:
-
-```bash
-docker-compose ps
+docker-compose exec mariadb mysql
 ```
 
 To get a bash terminal inside the PHP container you can use the following:
 
 ```bash
-docker-compose exec php
+docker-compose exec php /bin/bash
 ```
 
 To import an exported site database into the database container (if you don't have pv installed you can do so with `brew install pv`):
