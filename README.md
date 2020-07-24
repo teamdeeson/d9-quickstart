@@ -1,20 +1,14 @@
 # Drupal 9
-The preferred way to manage Drupal 9 sites is to use composer, and the Drupal Composer project helps integrate Drupal core with composer.
+The preferred way to manage Drupal 9 sites is to use composer, and the Drupal Composer project helps integrate Drupal core with composer. This README describes the approach and some dependencies.
 
-This repository provides a quick start wrapper around Drupal Composer and includes common configuration and recommended modules for Deeson Drupal 9 projects.
+## Dependencies
 
-Quick-start projects use composer for dependency management, including Drupal core, contrib and 3rd party libraries. The contents of docroot/ should be considered expendable during development and can be recompiled from the contents of the repository.
-
-We use [Docker](https://docs.docker.com/engine/installation/) and [Docker compose](https://docs.docker.com/compose/install/) for managing local development and this repository comes with some default configuration for working with Docker. You are of course free to use alternatives, but additional configuration may be required.
-
-For drush to work with Docker, you'll need to add the following line to your `/etc/hosts` file:
-127.0.0.1 docker.local
+* [Docker](https://docs.docker.com/engine/installation/)
+* [Docker compose](https://docs.docker.com/compose/install/)
+* [Composer](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx).
+* [Deeson Docker proxy](https://github.com/teamdeeson/docker-proxy)
 
 ## Creating a new Drupal site
-
-You do not need to clone this repo, our quick start is checked out using composer.
-
-First you need to [install composer](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx).
 
 Then you can create a new project using composer, keep the project name short and without punctuation (e.g. myproject)
 
@@ -227,11 +221,6 @@ pv database_export_filename.sql | docker-compose exec -T mariadb mysql -udrupal 
 ```
 
 Note that this method is up to 33% faster than the drush method `pv database_export_filename.sql | drush @docker sql-cli`
-
-# Dependencies
-
-Our Docker proxy should be installed and running.
-See here for installation notes: https://bitbucket.org/deesongroup6346/d4d-traefik-proxy
 
 # Known issues
 
