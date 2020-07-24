@@ -30,100 +30,75 @@ git add .
 git commit -m "Created the project."
 ```
 
-Create yourself a starter environment config.
-
-```bash
-cp .env.example .env
-```
-
 ### Required configuration
 You should check through all of the services and settings files and make any required amendments. The following amendments need to be made at a minimum:
 
-`.env:` Add your project name in here, use the same one as used with composer (e.g. myproject) and make up a salt string.
+`.env:` Change the PROJECT_NAME and PROJECT_BASE_URL for your new project (the url must end in .localhost). Make up a new HASH_SALT string.
 
-`src/settings/environment.inc:` Configure your domain names
+`src/settings/environment.inc:` Configure your domain names here if you know what the remote ones are going to be.
 
 `src/settings/02-shield.settings.inc:` Configure basic-auth access details to protect your dev sites (Acquia only)
 
 ## Build and install
-At Deeson we use Makefiles to orchestrate any additional tasks such as building dependencies and running tests.
-
-This ensures we have a universal mechanism for task running across all of our projects.
 
 The project can now be built for the first time using the included Makefile
 
 ```bash
 make
 ```
-will build the project based on the assumed environment. This will create the `docroot/` folder and build your website.
 
-You can specify the environment explicitly with the ENVIRONMENT variable which will add or remove dev dependencies:
+This will create the `docroot/` folder and build your website.
 
-You can also safely remove your docroot at any point if you need to:
+It should finish with a one time login URL which you can copy into the chrome browser to access your new Drupal site.
 
-```bash
-make clean
-```
+## Starting and stopping the project.
 
-Once you have run the build for the first time, you can setup and run your Docker environment using the following command.
-
-```
-make start
-```
-
-You should now have several running docker containers, including nginx, php, mariadb. Run the following command to check this.
-
-```
-$ docker container ls
-CONTAINER ID        IMAGE                             COMMAND                  CREATED             STATUS              PORTS                                      NAMES
-01b7db232917        wodby/drupal-nginx:8-1.13-2.4.2   "/docker-entrypoint.…"   3 minutes ago       Up 3 minutes        80/tcp                                     d8-quickstart_nginx
-b463d169feeb        deeson/fe-node                    "bash -c 'yarn insta…"   3 minutes ago       Up 3 minutes                                                   d8-quickstart_fe-node
-f487f9c5ae93        wodby/drupal-php:7.1-2.4.3        "/docker-entrypoint.…"   3 minutes ago       Up 3 minutes        9000/tcp                                   d8-quickstart_php
-fd56e451e51d        wodby/mariadb:10.1-2.3.3          "/docker-entrypoint.…"   3 minutes ago       Up 3 minutes        3306/tcp                                   d8-quickstart_mariadb
-53d6dcb35ee1        mailhog/mailhog                   "MailHog"                3 minutes ago       Up 3 minutes        1025/tcp, 8025/tcp                         d8-quickstart_mailhog
-fb0ebe6aae0e        wodby/redis:3.2-2.1.0             "/docker-entrypoint.…"   3 minutes ago       Up 3 minutes        6379/tcp                                   d8-quickstart_redis
-834f7edc1c46        wodby/drupal-solr:8-6.4-2.0.0     "docker-entrypoint-s…"   3 minutes ago       Up 3 minutes        8983/tcp                                   d8-quickstart_solr
-c18f97249a71        deeson/fe-php                     "docker-php-entrypoi…"   3 minutes ago       Up 3 minutes                                                   d8-quickstart_fe-php
-2ffcf9dcf72d        traefik:1.6.6-alpine              "/entrypoint.sh --do…"   23 hours ago        Up 20 hours         0.0.0.0:80->80/tcp, 0.0.0.0:443->443/tcp   traefik
-```
-
-The output should contain a line like this:
-
-```
-2ffcf9dcf72d        traefik:1.6.6-alpine            "/entrypoint.sh --do…"   21 hours ago        Up 18 hours         0.0.0.0:80->80/tcp, 0.0.0.0:443->443/tcp   traefik
-```
-
-This is the docker-proxy container. It must be running for you to view the site in browser. See [dependencies](#dependencies) section for setup instructions.
-
-```
-cd docker-proxy
-make start
-```
-
-You should now be able to access a vanilla Drupal site at [https://d8-quickstart.localhost](https://d8-quickstart.localhost) in Google Chrome. You will need to add a security exemption as Chrome will complain about the SSL certificate being unsigned.
-
-If you want to use other browsers you have to add an entry to your `/etc/hosts` file:
-
-```
-127.0.0.1 d9-quickstart.localhost
-```
-
-If you want to rerun the installation process you can use:
-
-```bash
-make install
-```
-will install the site and associated configuration. You will be prompted to optionally perform a site install. If you proceed this will erase your existing site database.
-
-You can stop the docker environment at any time using the command below:
+Once you have run the build for the first time, you can stop the project any time by running:
 
 ```
 make stop
 ```
 
-Your site files and database will be stored outside of docker in the `.persist` hidden directory.
+The project can then be started again later with:
+
+```
+make start
+```
+
+## Docker commands
+
+You should now have several running docker containers, including nginx, php, mariadb. Run the following command to check this.
+
+```
+docker-compose ps
+```
+
+You can access the realtime logs from these with:
+
+```
+make logs
+```
+
+or the logs from a specific container with:
+
+```
+docker-compose logs php -f
+```
+
+You can access localhost domains in Chrome without makeing any changes.  If you want to use other browsers you have to add an entry to your `/etc/hosts` file for this project (replace project url with your url):
+
+```
+127.0.0.1 project.localhost
+```
+
+If you want to delete the site and rerun the installation process you can use:
+
+```bash
+make clean && make install
+```
 
 ## Managing dependencies with composer
+
 All of your dependencies should be managed through composer. This includes any off-the-shelf code such as Drupal core, contrib modules and themes, and any 3rd party libraries.
 
 ### To add a module (e.g. redirect):
@@ -193,9 +168,6 @@ For all your front end needs. This makes use of our front end setup, you can fin
 This is where you place your custom modules.
 
 Anything within `src/modules/` will be made available in `docroot/modules/custom/`
-
-#### src/services/
-You can define your services YAML files here.
 
 #### src/settings/
 This contains the Drupal site settings, extracted from settings.php.
@@ -269,7 +241,7 @@ The Docker proxy needs to be running. See dependencies above.
 
 # Managing Configuration
 
-The D8 Quickstart uses [Config Split](https://www.drupal.org/project/config_split) to separate local development configuration from the default configuration.
+The D9 Quickstart uses [Config Split](https://www.drupal.org/project/config_split) to separate local development configuration from the default configuration.
 
 ## Exporting configuration
 
