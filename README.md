@@ -123,12 +123,6 @@ will run all of the Project's automated tests.
 
 ## Project structure
 
-### behat-tests/
-This contains all of the Behat tests for your project.
-
-### config/
-This contains Drupal's CMI configuration files.
-
 ### docroot/
 This directory contains compiled content and should not normally be committed to your repository.
 
@@ -137,6 +131,9 @@ This contains your drush site aliases file(s).
 
 ### src/
 This contains all of your project source code. As follows:
+
+#### src/config/
+This contains Drupal's CMI configuration files.
 
 #### src/frontend/
 For all your front end needs. This makes use of our front end setup, you can find out how here : https://github.com/teamdeeson/deeson-webpack-config
@@ -156,9 +153,6 @@ Anything within `src/themes/` will be made available in `docroot/themes/custom/`
 
 ##### src/themes/deeson_frontend_framework
 The default hook up between drupal and src/frontend. Your theme can either inherit from this or follow the instructions from https://github.com/teamdeeson/deeson-webpack-config to do it yourself (its not tricky).
-
-### scripts/
-This is for any compilation or deployment scripts you may want to add.
 
 These need to be included in your settings file in the usual way:
 
