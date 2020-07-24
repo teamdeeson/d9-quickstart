@@ -228,26 +228,6 @@ Note that this method is up to 33% faster than the drush method `pv database_exp
 
 The Docker proxy needs to be running. See dependencies above. 
 
-# Managing Configuration
-
-The D9 Quickstart uses [Config Split](https://www.drupal.org/project/config_split) to separate local development configuration from the default configuration.
-
-## Exporting configuration
-
-The default configuration will be exported to `./config/default` by `drush @docker cex`.
-
-The local development configuration will be exported to `./config/local` automatically when `drush @docker cex` is ran.
-
-You can control what is considered local configuration in the Drupal 8 admin area.
-
-## Importing configuration
-
-You can import the site configuration using `drush @docker cim`
-
-The default configuration will always be imported.
-
-If the environment is the local development environment then the local configuration is also imported.
-
 ## Using Drush with Acquia
 
 You may need to add the following to your ~/.ssh/config when working with Drush and Acquia remote hosts:
