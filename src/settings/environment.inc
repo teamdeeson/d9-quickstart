@@ -21,7 +21,6 @@ const D_PLATFORM_PLATFORMSH = 'platformsh';
  */
 $base_domains = [
   getenv('D4D_HOSTNAME') => 'local',
-  'docker.local' => 'local',
   'dev.example.com' => 'dev',
   'test.example.com' => 'test',
   'www.example.com' => 'prod',
