@@ -8,7 +8,7 @@ This project works with MacOSX and Linux but it is not tested on other operating
 
 * [Docker](https://docs.docker.com/engine/installation/)
 * [Docker compose](https://docs.docker.com/compose/install/)
-* [Composer](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx).
+* [Composer](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx)
 * [Deeson Docker proxy](https://github.com/teamdeeson/docker-proxy)
 
 ## Creating a new Drupal 9 site
