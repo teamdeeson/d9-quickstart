@@ -1,0 +1,5 @@
+services:
+  entity_class_bundles_demo.commands:
+    class: \Drupal\entity_class_bundles_demo\Commands\EntityClassBundlesDemoCommands
+    tags:
+      - { name: drush.command }
