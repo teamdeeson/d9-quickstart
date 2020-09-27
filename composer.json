@@ -96,6 +96,9 @@
     "patches": {
       "drupal/config_ignore": {
         "https://www.drupal.org/project/config_ignore/issues/3150462": "https://www.drupal.org/files/issues/2020-06-10/3150462-2.patch"
+      },
+      "drupal/core": {
+        "Allow entity classes per bundle": "https://www.drupal.org/files/issues/2020-06-16/2570593-105.patch"
       }
     }
   },
