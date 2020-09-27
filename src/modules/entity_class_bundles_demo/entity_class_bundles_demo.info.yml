@@ -2,4 +2,4 @@ name: 'Entity class bundles demo'
 description: 'Example usage of entity bundle classes. Registers entity bundle classes for article and basic page'
 package: 'Deeson'
 type: 'module'
-core: '9.x'
+core_version_requirement: ^9

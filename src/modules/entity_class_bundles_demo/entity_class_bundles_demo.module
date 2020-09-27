@@ -11,5 +11,5 @@ use Drupal\entity_class_bundles_demo\Entity\TaxonomyTerm\Tag;
 function entity_class_bundles_demo_entity_bundle_info_alter(&$bundles) {
   $bundles['node']['page']['class'] = BasicPage::class;
   $bundles['node']['article']['class'] = Article::class;
-  $bundles['term']['tags']['class'] = Tag::class;
+  $bundles['taxonomy_term']['tags']['class'] = Tag::class;
 }
