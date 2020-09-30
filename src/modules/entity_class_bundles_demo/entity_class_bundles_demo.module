@@ -1,0 +1,15 @@
+<?php
+
+
+use Drupal\entity_class_bundles_demo\Entity\Node\BasicPage;
+use Drupal\entity_class_bundles_demo\Entity\Node\Article;
+use Drupal\entity_class_bundles_demo\Entity\TaxonomyTerm\Tag;
+
+/**
+ * Implements hook_entity_bundle_info_alter().
+ */
+function entity_class_bundles_demo_entity_bundle_info_alter(&$bundles) {
+  $bundles['node']['page']['class'] = BasicPage::class;
+  $bundles['node']['article']['class'] = Article::class;
+  $bundles['taxonomy_term']['tags']['class'] = Tag::class;
+}
