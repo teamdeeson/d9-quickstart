@@ -15,12 +15,12 @@ definitions:
           - 'scripts/make/**'
     - step: &drupal
         name: Build Drupal
-        image: composer
+        image: composer:2
         caches:
           - composer
           - drush
         script:
-          - composer install
+          - composer --version && composer install
         artifacts:
           - 'docroot/**'
           - 'vendor/**'
