@@ -51,29 +51,26 @@ definitions:
 pipelines:
   branches:
     master:
-      - parallel
+      - parallel:
         - step: *drupal
         - step: *frontend
         - step: *test
       - step: *deploy
     develop:
-      - step: *bootstrap
-      - parallel
+      - parallel:
         - step: *drupal
         - step: *frontend
         - step: *test
       - step: *deploy
     UAT:
-      - step: *bootstrap
-      - parallel
+      - parallel:
         - step: *drupal
         - step: *frontend
         - step: *test
       - step: *deploy
   tags:
     '*':
-      - step: *bootstrap
-      - parallel
+      - parallel:
         - step: *drupal
         - step: *frontend
         - step: *test
