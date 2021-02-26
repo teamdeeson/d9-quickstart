@@ -1,0 +1,5 @@
+# Custom settings for RMG
+api_version: 1
+php_version: 7.3
+web_docroot: true
+enforce_https: full
