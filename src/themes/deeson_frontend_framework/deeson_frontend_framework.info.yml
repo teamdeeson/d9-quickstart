@@ -2,7 +2,7 @@ name: Deeson Frontend Framework
 type: theme
 description: A base theme implementing Deeson's frontend framework.
 
-core: 8.x
+core_version_requirement: 9.x
 base theme: stable
 hidden: true
 

@@ -1,0 +1,6 @@
+name: Starter
+type: theme
+description: Deeson starter theme.
+
+core_version_requirement: 9.x
+base theme: deeson_frontend_framework
