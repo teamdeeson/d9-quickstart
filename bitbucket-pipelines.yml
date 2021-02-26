@@ -33,7 +33,7 @@ definitions:
         caches:
           - node
         script:
-          - cd src/frontend && yarn && yarn dist
+          - cd src/frontend && yarn && yarn build
         artifacts:
           - 'src/frontend/assets/**'
           - 'src/frontend/node_modules/**'
