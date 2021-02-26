@@ -15,12 +15,12 @@ definitions:
           - 'scripts/make/**'
     - step: &drupal
         name: Build Drupal
-        image: wodby/drupal-php:7.1-2.4.3
+        image: composer
         caches:
           - composer
           - drush
         script:
-          - make pipelines-build-drupal
+          - composer install
         artifacts:
           - 'docroot/**'
           - 'vendor/**'
