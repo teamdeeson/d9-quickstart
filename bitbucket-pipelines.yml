@@ -7,46 +7,46 @@ definitions:
     node: src/frontend/node_modules
   steps:
     - step: &bootstrap
-      name: Bootstrap
-      image: deeson/deployer
-      script:
-        - make pipelines-bootstrap
-      artifacts:
-        - 'scripts/make/**'
+        name: Bootstrap
+        image: deeson/deployer
+        script:
+          - make pipelines-bootstrap
+        artifacts:
+          - 'scripts/make/**'
     - step: &drupal
-      name: Build Drupal
-      image: wodby/drupal-php:7.1-2.4.3
-      caches:
-        - composer
-        - drush
-      script:
-        - make pipelines-build-drupal
-      artifacts:
-        - 'docroot/**'
-        - 'vendor/**'
-        - 'web'
+        name: Build Drupal
+        image: wodby/drupal-php:7.1-2.4.3
+        caches:
+          - composer
+          - drush
+        script:
+          - make pipelines-build-drupal
+        artifacts:
+          - 'docroot/**'
+          - 'vendor/**'
+          - 'web'
     - step: &frontend
-      name: Build Front-End
-      image:
-        name: deeson/fe-node
-        run-as-user: 1000
-      caches:
-        - node
-      script:
-        - make pipelines-build-frontend
-      artifacts:
-        - 'src/frontend/assets/**'
-        - 'src/frontend/node_modules/**'
+        name: Build Front-End
+        image:
+          name: deeson/fe-node
+          run-as-user: 1000
+        caches:
+          - node
+        script:
+          - make pipelines-build-frontend
+        artifacts:
+          - 'src/frontend/assets/**'
+          - 'src/frontend/node_modules/**'
     - step: &test
-      name: Test Build
-      image: wodby/drupal-php:7.1-2.4.3
-      script:
-        - make pipelines-test-standards
+        name: Test Build
+        image: wodby/drupal-php:7.1-2.4.3
+        script:
+          - make pipelines-test-standards
     - step: &deploy
-      name: Relay
-      image: deeson/deployer
-      script:
-        - /opt/ci-tools/deployer.sh
+        name: Relay
+        image: deeson/deployer
+        script:
+          - /opt/ci-tools/deployer.sh
 
 pipelines:
   branches:
