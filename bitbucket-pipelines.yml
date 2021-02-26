@@ -20,7 +20,7 @@ definitions:
           - composer
           - drush
         script:
-          - composer --version && composer install
+          - composer --version && composer install --ignore-platform-reqs
         artifacts:
           - 'docroot/**'
           - 'vendor/**'
@@ -33,7 +33,7 @@ definitions:
         caches:
           - node
         script:
-          - make pipelines-build-frontend
+          - yarn && yarn dist
         artifacts:
           - 'src/frontend/assets/**'
           - 'src/frontend/node_modules/**'
@@ -60,7 +60,6 @@ pipelines:
       - parallel:
         - step: *drupal
         - step: *frontend
-        - step: *test
       - step: *deploy
     UAT:
       - parallel:
