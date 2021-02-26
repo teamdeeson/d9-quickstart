@@ -44,7 +44,7 @@ definitions:
           - make pipelines-test-standards
     - step: &deploy
         name: Relay
-        image: deeson/deployer
+        image: deeson/deployer:snapshot-fix
         script:
           - /opt/ci-tools/deployer.sh
 
