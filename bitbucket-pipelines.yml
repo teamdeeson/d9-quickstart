@@ -21,6 +21,7 @@ definitions:
           - drush
         script:
           - composer --version && composer install --ignore-platform-reqs
+          - ln -s docroot web 
         artifacts:
           - 'docroot/**'
           - 'vendor/**'
