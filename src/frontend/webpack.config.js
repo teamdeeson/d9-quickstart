@@ -1,5 +1,4 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const WriteFilePlugin = require('write-file-webpack-plugin');
 const DrupalTemplatePlugin = require('deeson-webpack-config-starter/drupal-templates-webpack-plugin');
 
 const path = require('path');
@@ -9,7 +8,7 @@ const config = {
     app: './src/app.js',
   },
   mode: 'development',
-  devtool: '#source-map',
+  devtool: 'source-map',
   output: {
     path: path.resolve(process.cwd(), 'assets'),
     publicPath: '/themes/custom/component_theme/assets',
@@ -20,6 +19,7 @@ const config = {
     quiet: false,
     noInfo: false,
     https: true,
+    writeToDisk: true,
     stats: {
       assets: false,
       colors: true,
@@ -66,7 +66,7 @@ const config = {
         ],
       },
       {
-        issuer: { exclude: /\.css/ },
+        issuer: { not: [ /\.css/ ] },
         test: /.*\.(gif|png|jpe?g|svg)(\?v=\d+\.\d+\.\d+)?$/i,
         use: [
           {
@@ -101,7 +101,6 @@ const config = {
     ],
   },
   plugins: [
-    new WriteFilePlugin({ log: false }),
     new DrupalTemplatePlugin({ ignore: /.*pages.*/ }),
     new MiniCssExtractPlugin({
       // Options similar to the same options in webpackOptions.output

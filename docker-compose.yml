@@ -19,12 +19,14 @@ services:
       - default
 
   php:
-    image: wodby/drupal-php:7.3-dev
+    image: wodby/drupal-php:7.4-dev
     container_name: "${PROJECT_NAME}_php"
     environment:
       DOCKER_LOCAL: 1
       D4D_HOSTNAME: ${PROJECT_BASE_URL}
       DRUPAL_HASH_SALT: ${DRUPAL_HASH_SALT}
+      REDUCE_CACHING: 1
+      FOO: bar
       PHP_SENDMAIL_PATH: /usr/sbin/sendmail -t -i -S mailhog:1025
       DB_HOST: mariadb
       DB_USER: drupal
@@ -109,7 +111,7 @@ services:
       - default
 
   fe-node:
-    image: deeson/fe-node
+    image: deeson/fe-node:v12
     container_name: "${PROJECT_NAME}_fe-node"
     depends_on:
       - 'fe-php'
@@ -135,7 +137,7 @@ services:
     working_dir: /app
     environment:
       DOCKER_LOCAL: 1
-    command: bash -c 'composer install && node_modules/.bin/deeson-router-start.sh'
+    command: bash -c 'composer install && node_modules/.bin/deeson-router-start'
     networks:
       - default
 
