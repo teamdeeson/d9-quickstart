@@ -28,6 +28,14 @@ git add .
 git commit -m "Created the project."
 ```
 
+### Create .env file
+
+You should copy the `.env.example` file to `.env` and update for your project.
+
+```
+cp .env.example .env
+```
+
 ### Required configuration
 
 You should configure the project for your needs now. The following amendments need to be made at a minimum:

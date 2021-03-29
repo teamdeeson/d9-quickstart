@@ -8,7 +8,7 @@
 # your project .env file.  The default is to use Docker for local development.
 #
 
-USE_DOCKER ?= 1
+USE_DOCKER ?= 0
 
 #
 # Ensure the local environment has the right binaries installed.
@@ -28,7 +28,7 @@ default: install start build
 # Bring in the external project dependencies.
 #
 
-install: .env
+install:
 ifeq ("${USE_DOCKER}","1")
 	docker run --rm --interactive --tty  --volume $(PWD):/var/www/html:delegated wodby/drupal-php:7.3-dev /bin/bash -c "composer global require hirak/prestissimo; composer install"
 else
@@ -108,9 +108,6 @@ clean: stop
 #
 # Generate project symlinks and other disposable assets and wiring.
 #
-
-.env:
-	cp .env.example .env
 
 public-file-store:
 ifeq ("${USE_DOCKER}","1")
