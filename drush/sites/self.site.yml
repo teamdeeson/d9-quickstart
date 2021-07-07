@@ -1,7 +1,7 @@
 docker:
   paths:
-    drush-script: /var/www/html/vendor/bin/drush
-  root: /var/www/html/docroot
+    drush-script: /app/vendor/bin/drush
+  root: /app/docroot
   uri: ${env.D4D_HOSTNAME}
 
 pipelines:

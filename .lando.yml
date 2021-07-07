@@ -1,0 +1,99 @@
+name: d9-quickstart
+recipe: drupal9
+env_file:
+  - .env
+#excludes:
+#  - vendor
+
+config:
+  xdebug: false
+  webroot: docroot
+  php: '7.4'
+
+proxy:
+  mailhog:
+    - mailhog.d9-quickstart.lndo.site
+  fe-node:
+    - frontend.d9-quickstart.lndo.site
+  phpmyadmin:
+    - phpmyadmin.d9-quickstart.lndo.site
+
+services:
+  appserver:
+    build:
+      - composer install
+    overrides:
+      environment:
+        DRUSH_OPTIONS_ROOT: '/app/docroot'
+        DRUSH_OPTIONS_URI: 'https://d9-quickstart.lndo.site'
+
+  database:
+    creds:
+      user: drupal
+      password: drupal
+      database: drupal
+    overrides:
+      volumes:
+        - ./.mariadb-init:/docker-entrypoint-initdb.d # A starter database is inside here.
+
+  mailhog:
+    type: mailhog
+    hogfrom:
+      - appserver
+    portforward: true
+
+  redis:
+    type: 'redis:4'
+
+  fe-node:
+    type: 'node:12'
+    overrides:
+      image: deeson/fe-node:v12
+      depends_on:
+        - 'fe-php'
+      volumes:
+        - ./src/frontend:/app:delegated
+      working_dir: /app
+      environment:
+        DOCKER_LOCAL: 1
+      command: bash -c 'yarn install && yarn start'
+
+  fe-php:
+    type: 'php:7.4'
+    overrides:
+      image: deeson/fe-php
+      volumes:
+        - ./src/frontend:/app:delegated
+      working_dir: /app
+      environment:
+        DOCKER_LOCAL: 1
+      command: bash -c 'composer install && node_modules/.bin/deeson-router-start'
+
+  phpmyadmin:
+    type: phpmyadmin
+
+tooling:
+  drush:
+    service: appserver
+    cmd: "/app/vendor/bin/drush --root=/app/docroot"
+
+  xdebug-on:
+    service: appserver
+    description: Enable xdebug for apache.
+    cmd: "docker-php-ext-enable xdebug && /etc/init.d/apache2 reload"
+    user: root
+
+  xdebug-off:
+    service: appserver
+    description: Disable xdebug for apache.
+    cmd: "rm /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && /etc/init.d/apache2 reload"
+    user: root
+
+  node:
+    service: fe-node
+
+  npm:
+    service: fe-node
+
+  yarn:
+    service: fe-node
