@@ -10,6 +10,7 @@ config:
   xdebug: false
   webroot: docroot
   php: '7.4'
+  composer_version: '2'
 
 proxy:
   mailhog:
