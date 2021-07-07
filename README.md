@@ -6,10 +6,8 @@ This project works with MacOSX and Linux but it is not tested on other operating
 
 ## Dependencies
 
-* [Docker](https://docs.docker.com/engine/installation/)
-* [Docker compose](https://docs.docker.com/compose/install/)
-* [Composer](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx)
-* [Deeson Docker proxy](https://github.com/teamdeeson/docker-proxy)
+* [Docker](https://docs.docker.com/engine/install/)
+* [Lando](https://github.com/lando/lando/releases)
 
 ## Creating a new Drupal 9 site
 
@@ -66,11 +64,7 @@ make start
 
 ## Browser access
 
-You can access localhost domains in Chrome without making any changes.  If you want to use other browsers you have to add an entry to your `/etc/hosts` file for this project (replace project url with your url):
-
-```
-127.0.0.1 project.localhost
-```
+You can access the project from your `project.lndo.site` domain
 
 ## Managing dependencies with composer
 
@@ -79,18 +73,18 @@ All of your dependencies should be managed through composer. This includes any o
 ### To add a module (e.g. redirect):
 
 ```bash
-composer require drupal/redirect
+lando composer require drupal/redirect
 ```
 
 ### To update a module (e.g. redirect):
 
 ```bash
-composer update drupal/redirect
+lando composer update drupal/redirect
 ```
 
 ### To update Drupal core:
 ```bash
-composer update drupal/core --with-dependencies
+lando composer update drupal/core-recommended --with-dependencies
 ```
 
 **You should commit your composer.lock file to the repository as this will guarantee that any subsequent builds will use the same exact version of all
@@ -166,13 +160,7 @@ This is the composer vendor directory, which contains project dependencies, tool
 ### web/
 This and `docroot/` are symlinked to the same location for wider compatibility and should also be excluded from your repository.
 
-# Docker commands
-
-You should now have several running docker containers, including nginx, php, mariadb. Run the following command to check this.
-
-```
-docker-compose ps
-```
+# Lando commands
 
 You can access the realtime logs from these with:
 
@@ -183,7 +171,7 @@ make logs
 or the logs from a specific container with:
 
 ```
-docker-compose logs php -f
+make logs-fe
 ```
 
 If you want to delete the site and rerun the installation process you can use:
@@ -192,37 +180,24 @@ If you want to delete the site and rerun the installation process you can use:
 make clean && make install
 ```
 
-You can use the docker-compose tool as a shortcut for common docker commands. To run a command within one of the containers you can use:
-```
-docker-compose exec <container-name> <command>
-```
-
 For example to start a mysql client on the database container (mariadb) run:
 ```
-docker-compose exec mariadb mysql
+lando mysql
 ```
 
 To get a bash terminal inside the PHP container you can use the following:
 
 ```bash
-docker-compose exec php /bin/bash
+lando ssh -s appserver
 ```
 
-To import an exported site database into the database container (if you don't have pv installed you can do so with `brew install pv`):
+To import an exported site database into the database container:
 
 ```bash
-pv database_export_filename.sql | docker-compose exec -T mariadb mysql -udrupal -pdrupal drupal
+lando db-import database_export_filename.sql
 ```
 
-Note that this method is up to 33% faster than the drush method `pv database_export_filename.sql | drush @docker sql-cli`
-
 # Known issues
-
-## Deeson Docker Proxy not running.
-
-`ERROR: Network proxy declared as external, but could not be found. Please create the network manually using 'docker network create proxy' and try again.`
-
-The Docker proxy needs to be running. See dependencies above. 
 
 ## Using Drush with Acquia
 

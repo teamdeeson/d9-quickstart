@@ -8,29 +8,21 @@
 # your project .env file.  The default is to use Docker for local development.
 #
 
-USE_DOCKER ?= 1
-
-#
-# Ensure the local environment has the right binaries installed.
-#
-
-REQUIRED_BINS := php composer
-$(foreach bin,$(REQUIRED_BINS),\
-    $(if $(shell command -v $(bin) 2> /dev/null),,$(error Please install `$(bin)`)))
+USE_DOCKER ?= 0
 
 #
 # Default is what happens if you only type make.
 #
 
-default: install start build
+default: start build
 
 #
 # Bring in the external project dependencies.
 #
 
-install: .env
+install:
 ifeq ("${USE_DOCKER}","1")
-	docker run --rm --interactive --tty  --volume $(PWD):/var/www/html:delegated wodby/drupal-php:7.3-dev /bin/bash -c "composer global require hirak/prestissimo; composer install"
+	lando composer install
 else
 	composer install
 endif
@@ -41,7 +33,7 @@ endif
 
 update:
 ifeq ("${USE_DOCKER}","1")
-	docker run --rm --interactive --tty --volume $(PWD):/app  --volume $(PWD)/.persist/composer:/tmp wodby/drupal-php:7.3-dev /bin/bash -c "composer global require hirak/prestissimo; composer update"
+	lando composer update
 else
 	composer update
 endif
@@ -52,16 +44,12 @@ endif
 
 start:
 ifeq ("${USE_DOCKER}","1")
-	@echo Bringing docker containers up
-	docker-compose up -d
-	docker-compose ps
-else
-	./vendor/bin/drush runserver
+	lando start
 endif
 
 stop:
 ifeq ("${USE_DOCKER}","1")
-	docker-compose down --remove-orphans
+	lando stop
 endif
 
 restart: stop start
@@ -74,14 +62,8 @@ build: install-drupal
 
 install-drupal:
 ifeq ("${USE_DOCKER}","1")
-	@echo Waiting for db to be ready ...
-	@sleep 45
-	./drush.wrapper @docker cim --yes
-	./drush.wrapper @docker uli
-else
-	./vendor/bin/drush si standard --yes
-	./vendor/bin/drush cim --yes
-	./vendor/bin/drush uli
+	lando drush @docker cim --yes
+	lando drush @docker uli
 endif
 
 #
@@ -112,12 +94,6 @@ clean: stop
 .env:
 	cp .env.example .env
 
-public-file-store:
-ifeq ("${USE_DOCKER}","1")
-	@test -d docroot/sites/default/files && rm -rf docroot/sites/default/files ||:
-	@ln -sfn /mnt/files/public docroot/sites/default/files
-endif
-
 docroot/sites/default/settings.php:
 	ln -s ../../../src/settings/settings.php docroot/sites/default/settings.php
 
@@ -136,7 +112,6 @@ docroot/profiles/custom:
 
 composer--post-install-cmd: composer--post-update-cmd
 composer--post-update-cmd: docroot/sites/default/settings.php \
-                                public-file-store \
                                 docroot/modules/custom \
                                 docroot/themes/custom;
 
@@ -146,17 +121,15 @@ composer--post-update-cmd: docroot/sites/default/settings.php \
 
 sql-cli:
 ifeq ("${USE_DOCKER}","1")
-	@docker-compose exec mariadb mysql -udrupal -pdrupal drupal
-else
-	@echo "You need to use whatever sqlite uses..."
+	lando mysql
+endif
+
+logs-fe:
+ifeq ("${USE_DOCKER}","1")
+	lando logs -s fe-node
 endif
 
 logs:
 ifeq ("${USE_DOCKER}","1")
-	docker-compose logs -f
-else
-	@echo "You need to use whatever sqlite uses..."
+	lando logs -s appserver
 endif
-
-xdebug:
-	sudo ifconfig lo0 alias 10.254.254.254
