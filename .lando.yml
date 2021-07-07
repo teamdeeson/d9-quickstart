@@ -106,4 +106,4 @@ tooling:
   drupalcs:
     service: appserver
     description: Run phpcs Drupal Coding Standards against a given file or directory.
-    cmd: "/app/vendor/bin/phpcs --standard=Drupal,DrupalPractice"
+    cmd: "/app/vendor/bin/phpcs --standard=Drupal,DrupalPractice --extensions=php,inc,module,theme --exclude=Drupal.Commenting.DocComment,Drupal.Commenting.ClassComment"
