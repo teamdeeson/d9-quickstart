@@ -2,6 +2,7 @@ name: d9-quickstart
 recipe: drupal9
 env_file:
   - .env
+# commented out to investigate why vendor becomes shared between two containers
 #excludes:
 #  - vendor
 
@@ -22,6 +23,7 @@ services:
   appserver:
     build:
       - composer install
+      - "/app/vendor/bin/phpcs --config-set installed_paths /app/vendor/drupal/coder/coder_sniffer"
     overrides:
       environment:
         DRUSH_OPTIONS_ROOT: '/app/docroot'
@@ -46,11 +48,10 @@ services:
     type: 'redis:4'
 
   fe-node:
-    type: 'node:12'
+    type: 'node:custom'
+    app_mount: disabled
     overrides:
       image: deeson/fe-node:v12
-      depends_on:
-        - 'fe-php'
       volumes:
         - ./src/frontend:/app:delegated
       working_dir: /app
@@ -59,9 +60,12 @@ services:
       command: bash -c 'yarn install && yarn start'
 
   fe-php:
-    type: 'php:7.4'
+    type: 'php:custom'
+    app_mount: disabled
     overrides:
       image: deeson/fe-php
+      depends_on:
+        - 'fe-node'
       volumes:
         - ./src/frontend:/app:delegated
       working_dir: /app
@@ -97,3 +101,8 @@ tooling:
 
   yarn:
     service: fe-node
+
+  drupalcs:
+    service: appserver
+    description: Run phpcs Drupal Coding Standards against a given file or directory.
+    cmd: "/app/vendor/bin/phpcs --standard=Drupal,DrupalPractice"

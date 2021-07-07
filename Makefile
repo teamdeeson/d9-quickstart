@@ -91,7 +91,7 @@ clean: stop
 # Generate project symlinks and other disposable assets and wiring.
 #
 
-.env:
+generate-env:
 	cp .env.example .env
 
 docroot/sites/default/settings.php:
