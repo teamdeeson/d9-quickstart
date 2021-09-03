@@ -2,10 +2,12 @@
 
 namespace Drupal\Tests\unit_test_demo\Unit;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * @group demo
  */
-class DemoTest extends \PHPUnit_Framework_TestCase {
+class DemoTest extends TestCase {
 
   /**
    * @test
