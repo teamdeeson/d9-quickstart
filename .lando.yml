@@ -2,9 +2,6 @@ name: d9-quickstart
 recipe: drupal9
 env_file:
   - .env
-# commented out to investigate why vendor becomes shared between two containers
-#excludes:
-#  - vendor
 
 config:
   xdebug: false
@@ -24,7 +21,7 @@ services:
   appserver:
     build:
       - composer install
-      - "/app/vendor/bin/phpcs --config-set installed_paths /app/vendor/drupal/coder/coder_sniffer"
+      - "/app/vendor/bin/phpcs --config-set installed_paths /app/vendor/drupal/coder/coder_sniffer,/app/vendor/phpcompatibility/php-compatibility/PHPCompatibility"
     overrides:
       environment:
         DRUSH_OPTIONS_ROOT: '/app/docroot'
@@ -82,13 +79,28 @@ tooling:
     service: appserver
     cmd: "/app/vendor/bin/drush --root=/app/docroot"
 
-  xdebug-on:
+  lint:standards:
+    service: appserver
+    description: Run phpcs Drupal Coding Standards against modules and themes.
+    cmd: "/app/vendor/bin/phpcs --standard=Drupal,DrupalPractice --extensions=php,inc,module,theme --exclude=Drupal.Commenting.DocComment,Drupal.Commenting.ClassComment --ignore=src/modules/entity_class_bundles_demo,src/themes/deeson_frontend_framework /app/src/modules/ /app/src/themes/"
+
+  lint:deprecated:
+    service: appserver
+    description: Run phpstan deprecated checks against modules and themes.
+    cmd: '/app/vendor/bin/phpstan analyse -c /app/phpstan.neon /app/src/modules/ /app/src/themes/'
+
+  lint:php:
+    service: appserver
+    description: Run phpcs PHPCompatibility checks against a given file or directory.
+    cmd: /app/vendor/bin/phpcs --standard=PHPCompatibility --extensions=php,inc,module,theme --runtime-set testVersion 7.4 --ignore=src/modules/entity_class_bundles_demo,src/themes/deeson_frontend_framework /app/src/modules/ /app/src/themes/
+
+  xdebug:on:
     service: appserver
     description: Enable xdebug for apache.
     cmd: "docker-php-ext-enable xdebug && /etc/init.d/apache2 reload"
     user: root
 
-  xdebug-off:
+  xdebug:off:
     service: appserver
     description: Disable xdebug for apache.
     cmd: "rm /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini && /etc/init.d/apache2 reload"
@@ -103,7 +115,11 @@ tooling:
   yarn:
     service: fe-node
 
-  drupalcs:
+  phpcs:
     service: appserver
-    description: Run phpcs Drupal Coding Standards against a given file or directory.
-    cmd: "/app/vendor/bin/phpcs --standard=Drupal,DrupalPractice --extensions=php,inc,module,theme --exclude=Drupal.Commenting.DocComment,Drupal.Commenting.ClassComment"
+    cmd: '/app/vendor/bin/phpcs'
+
+  phpstan:
+    service: appserver
+    cmd: '/app/vendor/bin/phpstan'
+
