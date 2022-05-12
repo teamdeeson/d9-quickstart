@@ -1,4 +1,4 @@
-uuid: 58d88ea0-74e6-41ae-9081-25df3c5f1e4c
+uuid: 51830e7f-eb95-48ce-891c-e8b93687e50e
 langcode: en
 status: true
 dependencies:
@@ -7,7 +7,7 @@ dependencies:
   theme:
     - bartik
 _core:
-  default_config_hash: KHQIJ7Vfl25lTjzIc7qIvnuistt-Mw2O0kG4jCofmkI
+  default_config_hash: KC12e0aosUnBBs5bd374JVcQjJaFNOSIHzu0dUGf22o
 id: bartik_messages
 theme: bartik
 region: highlighted
@@ -17,6 +17,6 @@ plugin: system_messages_block
 settings:
   id: system_messages_block
   label: 'Status messages'
-  provider: system
   label_display: '0'
+  provider: system
 visibility: {  }

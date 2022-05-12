@@ -1,4 +1,4 @@
-uuid: 058a1a99-a528-4ff3-bfc2-bcb11d4245ab
+uuid: 6aac1df0-c78e-42ab-83f9-0c1c88a2203f
 langcode: en
 status: true
 dependencies:
@@ -8,7 +8,7 @@ dependencies:
   module:
     - media
 _core:
-  default_config_hash: gUaDZKMQD3lmLKWPn727X3JHVdKJ525g4EJCCcDVAqk
+  default_config_hash: zQoBQ0BtnMM_rlDdgftyu6eI4AVs9mo5K8xq7NFO2Zc
 id: media.remote_video.default
 targetEntityType: media
 bundle: remote_video
@@ -16,12 +16,12 @@ mode: default
 content:
   field_media_oembed_video:
     type: oembed
-    weight: 0
     label: hidden
     settings:
       max_width: 0
       max_height: 0
     third_party_settings: {  }
+    weight: 0
     region: content
 hidden:
   created: true

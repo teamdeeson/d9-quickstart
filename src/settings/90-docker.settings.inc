@@ -8,6 +8,11 @@
 use Drupal\Component\Assertion\Handle;
 
 if (SETTINGS_ENVIRONMENT == D_ENVIRONMENT_LOCAL && SETTINGS_PLATFORM == D_PLATFORM_DOCKER) {
+  // @codingStandardsIgnoreFile
+  if (getenv('LANDO') !== 'ON') {
+    return;
+  }
+
   /**
    * Assertions.
    *
@@ -27,14 +32,15 @@ if (SETTINGS_ENVIRONMENT == D_ENVIRONMENT_LOCAL && SETTINGS_PLATFORM == D_PLATFO
   assert_options(ASSERT_ACTIVE, TRUE);
   Handle::register();
 
+  $lando_info = json_decode(getenv('LANDO_INFO'), TRUE);
+
   $databases['default']['default'] = array (
-    'database' => getenv('DB_NAME'),
-    'username' => getenv('DB_USER'),
-    'password' => getenv('DB_PASSWORD'),
+    'database' => $lando_info['database']['creds']['database'],
+    'username' => $lando_info['database']['creds']['user'],
+    'password' => $lando_info['database']['creds']['password'],
     'prefix' => '',
-    'host' => getenv('DB_HOST'),
-    'port' => '3306',
-    'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
+    'host' => $lando_info['database']['internal_connection']['host'],
+    'port' => $lando_info['database']['internal_connection']['port'],
     'driver' => 'mysql',
   );
 
@@ -54,8 +60,8 @@ if (SETTINGS_ENVIRONMENT == D_ENVIRONMENT_LOCAL && SETTINGS_PLATFORM == D_PLATFO
   $settings['file_private_path'] = 'sites/default/files/private';
 
   // Configure Redis.
-  $settings['redis.connection']['host'] = 'redis';
-  $settings['redis.connection']['port'] = '6379';
+  $settings['redis.connection']['host'] = $lando_info['redis']['internal_connection']['host'];
+  $settings['redis.connection']['port'] = $lando_info['redis']['internal_connection']['port'];
   $settings['redis.connection']['password'] = '';
   $settings['redis.connection']['base'] = 0;
   $settings['cache']['default'] = 'cache.backend.redis';
@@ -73,9 +79,9 @@ if (SETTINGS_ENVIRONMENT == D_ENVIRONMENT_LOCAL && SETTINGS_PLATFORM == D_PLATFO
   $settings['skip_permissions_hardening'] = TRUE;
 
   // Use the development service config.
-  if (getenv('REDUCE_CACHING')) {
-    $settings['container_yamls'][] = DRUPAL_ROOT . '/sites/development.services.yml';
+  $settings['container_yamls'][] = DRUPAL_ROOT . '/sites/development.services.yml';
 
+  if (getenv('REDUCE_CACHING')) {
     // Disable some caches on docker development.
     $settings['cache']['bins']['render'] = 'cache.backend.null';
     $settings['cache']['bins']['dynamic_page_cache'] = 'cache.backend.null';

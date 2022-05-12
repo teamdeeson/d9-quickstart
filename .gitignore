@@ -37,6 +37,7 @@ drush/contrib
 ######################
 *.log
 *.sql
+*.sqlite
 !.mariadb-init/startup.sql
 
 # OS generated files #
@@ -44,7 +45,6 @@ drush/contrib
 .DS_Store*
 ehthumbs.db
 Icon
-
 Thumbs.db
 ._*
 

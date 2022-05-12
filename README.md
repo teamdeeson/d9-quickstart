@@ -40,13 +40,30 @@ You should configure the project for your needs now. The following amendments ne
 
 The project can now be built for the first time using the included Makefile
 
+Copy the `.env` file using;
+
+```bash
+make generate-env
+```
+And update the values. You can then run the command below.
+
 ```bash
 make
 ```
 
 This will create the `docroot/` folder and build your website.
 
-It should finish with a one time login URL which you can copy into the Chrome web browser to access your new Drupal site.
+Once the project has started you should impot the starter database with;
+
+```
+lando db-import .mariadb-init/startup.sql
+```
+
+Once the import is complete you can login with a one time login URL which you can copy into the Chrome web browser to access your new Drupal site.
+
+```
+lando drush @docker uli
+```
 
 ## Starting and stopping the project.
 
@@ -100,20 +117,14 @@ https://getcomposer.org/doc/01-basic-usage.md
 
 ## Xdebug
 
-You need to run `sudo ifconfig lo0 alias 10.254.254.254` before Xdebug connections will work. This is usually required each time you log-in to your development machine, but is safe to run periodically.
+You can manage Xdebug with the following commands.
 
-## Running tests
+To enable:
+```lando xdebug:on```
 
-This repository contains the starting point for running both Behat and PHPUnit test suites as well as Drupal coding standards checks with PHPCS.
+To disable: ```lando xdebug:off```
 
-PHPUnit tests should be defined within you custom modules, in the tests/ sub-directory.
-
-Behat tests should be defined in the behat-tests directory in the project root.
-
-```bash
-make test
-```
-will run all of the Project's automated tests.
+Support for CLI debugging has also been added.
 
 ## Project structure
 

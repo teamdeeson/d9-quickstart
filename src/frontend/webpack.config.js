@@ -1,4 +1,5 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const WriteFilePlugin = require('write-file-webpack-plugin');
 const DrupalTemplatePlugin = require('deeson-webpack-config-starter/drupal-templates-webpack-plugin');
 
 const path = require('path');
@@ -8,10 +9,10 @@ const config = {
     app: './src/app.js',
   },
   mode: 'development',
-  devtool: 'source-map',
+  devtool: '#source-map',
   output: {
     path: path.resolve(process.cwd(), 'assets'),
-    publicPath: '/themes/custom/component_theme/assets',
+    publicPath: '/themes/custom/deeson_frontend_framework/assets/',
     filename: '[name].js',
   },
   devServer: {
@@ -19,7 +20,6 @@ const config = {
     quiet: false,
     noInfo: false,
     https: true,
-    writeToDisk: true,
     stats: {
       assets: false,
       colors: true,
@@ -44,37 +44,45 @@ const config = {
         loader: 'babel-loader',
       },
       {
-        test: /\.css$/,
+        test: /\.scss$/,
         use: [
           MiniCssExtractPlugin.loader,
           { loader: 'css-loader', options: { sourceMap: true } },
-          { loader: 'postcss-loader', options: { sourceMap: true } },
-        ],
-      },
-      {
-        issuer: /\.css/,
-        test: /.*\.(gif|png|jpe?g|svg)(\?v=\d+\.\d+\.\d+)?$/i,
-        use: [
           {
-            loader: 'url-loader',
+            loader: 'postcss-loader',
             options: {
-              limit: 1000,
-              name: '[path][name].[ext]',
-              context: 'src',
+              sourceMap: true,
             },
           },
+          { loader: 'sass-loader', options: { sourceMap: true } },
         ],
       },
       {
-        issuer: { not: [ /\.css/ ] },
         test: /.*\.(gif|png|jpe?g|svg)(\?v=\d+\.\d+\.\d+)?$/i,
-        use: [
+        oneOf: [
           {
-            loader: 'file-loader',
-            options: {
-              name: '[path][name].[ext]',
-              context: 'src',
-            },
+            issuer: /\.scss/,
+            use: [
+              {
+                loader: 'url-loader',
+                options: {
+                  limit: 1000,
+                  name: '[path][name].[ext]',
+                  context: 'src',
+                },
+              },
+            ],
+          },
+          {
+            use: [
+              {
+                loader: 'file-loader',
+                options: {
+                  name: '[path][name].[ext]',
+                  context: 'src',
+                },
+              },
+            ],
           },
         ],
       },
@@ -101,13 +109,9 @@ const config = {
     ],
   },
   plugins: [
+    new WriteFilePlugin({ log: false }),
     new DrupalTemplatePlugin({ ignore: /.*pages.*/ }),
-    new MiniCssExtractPlugin({
-      // Options similar to the same options in webpackOptions.output
-      // both options are optional
-      filename: '[name].css',
-      chunkFilename: '[id].css',
-    }),
+    new MiniCssExtractPlugin(),
   ],
 };
 

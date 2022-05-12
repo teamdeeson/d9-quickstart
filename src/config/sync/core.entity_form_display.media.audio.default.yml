@@ -1,4 +1,4 @@
-uuid: df45926e-9930-42c7-9547-e17a89f31ade
+uuid: 5e7bab9d-a7f6-4cc5-845c-add68ebdf5cc
 langcode: en
 status: true
 dependencies:
@@ -9,7 +9,7 @@ dependencies:
     - file
     - path
 _core:
-  default_config_hash: HGa6EpWJApUec2IS8zsOnJ3NhIhwY2QYNmLY7eS5zLM
+  default_config_hash: G2_SKH3jmI9FQeXSUxo3KgQqiyF1hPDEkc7-3-rCSbc
 id: media.audio.default
 targetEntityType: media
 bundle: audio
@@ -22,12 +22,12 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_media_audio_file:
+    type: file_generic
     weight: 0
+    region: content
     settings:
       progress_indicator: throbber
     third_party_settings: {  }
-    type: file_generic
-    region: content
   path:
     type: path
     weight: 30
@@ -36,20 +36,20 @@ content:
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    settings:
-      display_label: true
     weight: 100
     region: content
+    settings:
+      display_label: true
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
     weight: 5
+    region: content
     settings:
       match_operator: CONTAINS
       match_limit: 10
       size: 60
       placeholder: ''
-    region: content
     third_party_settings: {  }
 hidden:
   name: true

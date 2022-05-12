@@ -1,4 +1,4 @@
-uuid: 7ddc28a9-0574-4175-94f8-1b01516f382e
+uuid: d69f90a4-a5fa-4ebe-bb41-097f16685f20
 langcode: en
 status: true
 dependencies:
@@ -10,7 +10,7 @@ dependencies:
   module:
     - image
 _core:
-  default_config_hash: bluLijrv0ELGIq1uFR777kImy6ZH6VLl8mBCOwvuLg4
+  default_config_hash: oxp7yFz5G5Yg0Q00XN-9LC_eX4w8wj7vojjkd3XuaQs
 id: media.audio.media_library
 targetEntityType: media
 bundle: audio
@@ -18,13 +18,13 @@ mode: media_library
 content:
   thumbnail:
     type: image
-    weight: 0
-    region: content
     label: hidden
     settings:
-      image_style: thumbnail
       image_link: ''
+      image_style: thumbnail
     third_party_settings: {  }
+    weight: 0
+    region: content
 hidden:
   created: true
   field_media_audio_file: true

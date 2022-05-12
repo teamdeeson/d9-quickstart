@@ -1,13 +1,15 @@
-uuid: cd2ea49a-9a18-4394-99ca-3d7110003071
+uuid: 320a5bed-00c7-44ed-b584-a42f5eecc693
 langcode: en
 status: true
 dependencies:
+  config:
+    - system.menu.admin
   module:
     - node
     - scheduler
     - user
 _core:
-  default_config_hash: 72DaOXTPi--s-2ge-SRzJzYnqnoD2SAKPkUKXOvpxlU
+  default_config_hash: uZN6cIt2dD4FwsmAOJePjdGDOLwx9TjvixvVXEetc9k
 id: scheduler_scheduled_content
 label: 'Scheduled content'
 module: views
@@ -996,9 +998,9 @@ display:
     display_options:
       path: admin/content/scheduled
       menu:
-        type: tab
+        type: normal
         title: Scheduled
-        description: ''
+        description: 'Content scheduled for publishing and unpublishing'
         expanded: false
         parent: system.admin_content
         weight: -10

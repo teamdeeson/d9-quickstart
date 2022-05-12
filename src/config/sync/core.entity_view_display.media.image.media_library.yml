@@ -1,4 +1,4 @@
-uuid: d603e1a3-61e8-4211-ae48-89539557c313
+uuid: 3fc57d40-fa62-41a8-9614-1092532b7326
 langcode: en
 status: true
 dependencies:
@@ -10,7 +10,7 @@ dependencies:
   module:
     - image
 _core:
-  default_config_hash: PaGXvzRcL9eII--JV4eCVfObjrNo0l-u1dB_WJtB9ig
+  default_config_hash: p4SdSdLBlqfympeNav_Tdpn0-pL62tbjc348_zcPof4
 id: media.image.media_library
 targetEntityType: media
 bundle: image
@@ -18,13 +18,13 @@ mode: media_library
 content:
   thumbnail:
     type: image
-    weight: 0
-    region: content
     label: hidden
     settings:
-      image_style: medium
       image_link: ''
+      image_style: medium
     third_party_settings: {  }
+    weight: 0
+    region: content
 hidden:
   created: true
   field_media_image: true

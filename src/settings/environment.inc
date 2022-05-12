@@ -19,8 +19,9 @@ const D_PLATFORM_PLATFORMSH = 'platformsh';
 /**
  * Map domains to environment types here.
  */
+$hostname = getenv('D4D_HOSTNAME');
 $base_domains = [
-  getenv('D4D_HOSTNAME') => 'local',
+  $hostname => 'local',
   'dev.example.com' => 'dev',
   'test.example.com' => 'test',
   'www.example.com' => 'prod',
@@ -88,11 +89,11 @@ elseif (isset($_ENV['PLATFORM_APPLICATION'])) {
       break;
   }
 }
-elseif (getenv('DOCKER_LOCAL')) {
+elseif (getenv('LANDO') === 'ON') {
   // Local environment settings - see 90-docker-settings.inc.
   $platform = D_PLATFORM_DOCKER;
-  $env = $base_domains[getenv('D4D_HOSTNAME')];
-  $instance = getenv('D4D_HOSTNAME');
+  $env = $base_domains[$hostname];
+  $instance = $hostname;
 }
 else {
   // Running under Pipelines.

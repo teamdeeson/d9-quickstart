@@ -8,20 +8,20 @@
 # your project .env file.  The default is to use Docker for local development.
 #
 
-USE_DOCKER ?= 0
+DOCKER_LOCAL ?= 0
 
 #
 # Default is what happens if you only type make.
 #
 
-default: start build
+default: start
 
 #
 # Bring in the external project dependencies.
 #
 
 install:
-ifeq ("${USE_DOCKER}","1")
+ifeq ("${DOCKER_LOCAL}","1")
 	lando composer install
 else
 	composer install
@@ -32,7 +32,7 @@ endif
 #
 
 update:
-ifeq ("${USE_DOCKER}","1")
+ifeq ("${DOCKER_LOCAL}","1")
 	lando composer update
 else
 	composer update
@@ -43,41 +43,35 @@ endif
 #
 
 start:
-ifeq ("${USE_DOCKER}","1")
+ifeq ("${DOCKER_LOCAL}","1")
 	lando start
 endif
 
 stop:
-ifeq ("${USE_DOCKER}","1")
+ifeq ("${DOCKER_LOCAL}","1")
 	lando stop
 endif
 
 restart: stop start
 
 #
-# Build stages: Setup and configure the application for the environment.
-#
-
-build: install-drupal
-
-install-drupal:
-ifeq ("${USE_DOCKER}","1")
-	lando drush @docker cim --yes
-	lando drush @docker uli
-endif
-
-#
 # Linting / testing / formatting.
 #
 
 lint:
-	@echo "TBC ..."
+	ifeq ("${DOCKER_LOCAL}","1")
+		lando lint:standards
+	endif
 
-test:
-	@echo "TBC ..."
+deprecated:
+	ifeq ("${DOCKER_LOCAL}","1")
+		lando lint:deprecated
+	endif
 
-format:
-	@echo "TBC ..."
+phpcompat:
+	ifeq ("${DOCKER_LOCAL}","1")
+		lando lint:php
+	endif
 
 #
 # Delete all non version controlled files to reset the project.
@@ -120,16 +114,16 @@ composer--post-update-cmd: docroot/sites/default/settings.php \
 #
 
 sql-cli:
-ifeq ("${USE_DOCKER}","1")
+ifeq ("${DOCKER_LOCAL}","1")
 	lando mysql
 endif
 
 logs-fe:
-ifeq ("${USE_DOCKER}","1")
-	lando logs -s fe-node
+ifeq ("${DOCKER_LOCAL}","1")
+	lando logs -s fe-node -f
 endif
 
 logs:
-ifeq ("${USE_DOCKER}","1")
-	lando logs -s appserver
+ifeq ("${DOCKER_LOCAL}","1")
+	lando logs -s appserver -f
 endif

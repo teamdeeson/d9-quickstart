@@ -1,4 +1,4 @@
-uuid: 86a474bd-9257-47c7-9457-4d4cc910787e
+uuid: 331e9647-3563-4b4a-8891-de6b80c1b521
 langcode: en
 status: true
 dependencies:
@@ -9,19 +9,19 @@ dependencies:
   module:
     - image
 _core:
-  default_config_hash: B1a2aBHmUulUZN6HrxITEH1tSResuVjXMBEv1lUBtOo
+  default_config_hash: whJrNezqUJ7Qhg7raMQj2Hz9JPiWxijezhWIEN9BVVk
 id: media.image.default
 targetEntityType: media
 bundle: image
 mode: default
 content:
   field_media_image:
+    type: image
     label: visually_hidden
     settings:
-      image_style: large
       image_link: ''
+      image_style: large
     third_party_settings: {  }
-    type: image
     weight: 1
     region: content
 hidden:

@@ -1,4 +1,4 @@
-uuid: a1945de3-2c56-418d-9fc1-3d9697461154
+uuid: d73f0bfc-105a-4ace-a2ac-d625d9e51cf8
 langcode: en
 status: true
 dependencies:
@@ -10,7 +10,7 @@ dependencies:
   module:
     - image
 _core:
-  default_config_hash: sLyo3lc_eX4-C1Jv0ivqjuORGfdclLsX09tZf7K3EVM
+  default_config_hash: '-Rhy5VOFbfUBJ2-X5RA_fw5NipHP2lhdMZU886jRlts'
 id: media.remote_video.media_library
 targetEntityType: media
 bundle: remote_video
@@ -18,13 +18,13 @@ mode: media_library
 content:
   thumbnail:
     type: image
-    weight: 0
-    region: content
     label: hidden
     settings:
-      image_style: medium
       image_link: ''
+      image_style: medium
     third_party_settings: {  }
+    weight: 0
+    region: content
 hidden:
   created: true
   field_media_oembed_video: true
