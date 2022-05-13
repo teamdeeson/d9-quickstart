@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="phpcs Drupal">
+  <description>Baseline Drupal rules for PHP CodeSniffer</description>
+
+  <!-- Include path with the Drupal and DrupalPractice rules. -->
+  <config name="installed_paths" value="vendor/drupal/coder/coder_sniffer,vendor/slevomat/coding-standard"/>
+
+  <!-- For help understanding the `testVersion` configuration setting:
+       https://github.com/PHPCompatibility/PHPCompatibility#sniffing-your-code-for-compatibility-with-specific-php-versions -->
+  <config name="testVersion" value="8.0"/>
+
+  <!-- Specify standards. -->
+  <rule ref="Drupal"/>
+  <rule ref="DrupalPractice"/>
+
+  <!-- Specify files/folders. -->
+  <file>src/modules</file>
+  <file>src/themes</file>
+
+  <!-- Set excludes. -->
+  <exclude-pattern>src/modules/entity_class_bundles_demo/*</exclude-pattern>
+  <exclude-pattern>src/themes/deeson_frontend_framework/*</exclude-pattern>
+  <exclude-pattern>src/themes/*/assets/*</exclude-pattern>
+
+  <!-- PHPCS Arguments. -->
+  <arg name="extensions" value="php,inc,module,theme" />
+  <arg name="basepath" value="."/>
+  <arg name="colors"/>
+
+  <!-- Exclude rules. -->
+  <rule ref="Drupal.Commenting">
+    <exclude name="Drupal.Commenting.DocComment"/>
+    <exclude name="Drupal.Commenting.ClassComment"/>
+  </rule>
+</ruleset>
