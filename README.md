@@ -9,6 +9,8 @@ This project works with MacOSX and Linux but it is not tested on other operating
 * [Docker](https://docs.docker.com/engine/install/)
 * [Lando](https://github.com/lando/lando/releases)
 
+__Note when installing Lando with Docker already installed use the custom install and choose only to install Lando and not the bundled Docker__
+
 ## Creating a new Drupal 9 site
 
 Use the following command to create a new Drupal 9 project. Replace `<project-name>` with your own name.  Keep the project name short and without punctuation (e.g. myproject)
@@ -53,7 +55,7 @@ make
 
 This will create the `docroot/` folder and build your website.
 
-Once the project has started you should impot the starter database with;
+Once the project has started you should import the starter database with;
 
 ```
 lando db-import .mariadb-init/startup.sql
