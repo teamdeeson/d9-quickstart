@@ -6,9 +6,9 @@ core_version_requirement: 9.x
 base theme: stable
 hidden: true
 
-component-libraries:
-  components:
-    paths:
+components:
+  namespaces:
+    components:
       - assets/components
 
 libraries:
