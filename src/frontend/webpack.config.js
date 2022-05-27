@@ -80,6 +80,7 @@ const config = {
                 options: {
                   name: '[path][name].[ext]',
                   context: 'src',
+                  esModule: false,
                 },
               },
             ],
@@ -89,17 +90,16 @@ const config = {
       {
         test: /\.(tpl\.php|html\.twig)$/,
         loader: 'file-loader',
-        options: { regExp: '.*/src/(.*)', name: '[1]' },
+        options: { regExp: '.*/src/(.*)', name: '[1]', esModule: false },
         exclude: [/pages/],
       },
       {
         test: /(\.php|\.twig|\.twig\.html)$/,
         loader: 'file-loader',
-        options: { name: 'pages/[name].[ext]' },
+        options: { name: 'pages/[name].[ext]', esModule: false },
         exclude: [/src/],
       },
-
-      { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file-loader' },
+      { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file-loader', options: { esModule: false } },
       { test: /\.(woff|woff2)$/, loader: 'url-loader', options: { prefix: 'font/', limit: 5000 } },
       {
         test: /\.[ot]tf(\?v=\d+\.\d+\.\d+)?$/,
