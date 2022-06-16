@@ -3,15 +3,15 @@ variables:
 - someRegionFromDrupal: renderable
 
 example:
-    {% include '@components/myFooter/myFooter.html.twig' with {
+    {% include '@components/footer/footer.html.twig' with {
       content: {
         someRegionFromDrupal: '<p>Some markup from the depths of drupal.</p>'
       }
     }%}
 #}
-<footer class="my-footer">
+<footer class="footer">
   <h2>The footer</h2>
-  <div class="my-footer__contain">
-    {{ content.someRegionFromDrupal }}
+  <div class="footer__contain">
+    {{ title }}
   </div>
 </footer>

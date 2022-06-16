@@ -6,7 +6,7 @@ const path = require('path');
 
 const config = {
   entry: {
-    app: './src/app.js',
+    app: './src/app.ts',
   },
   mode: 'development',
   devtool: '#source-map',
@@ -39,7 +39,7 @@ const config = {
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.ts$/,
         exclude: /(node_modules)/,
         loader: 'babel-loader',
       },
@@ -110,7 +110,7 @@ const config = {
   },
   plugins: [
     new WriteFilePlugin({ log: false }),
-    new DrupalTemplatePlugin({ ignore: /.*pages.*/ }),
+    // new DrupalTemplatePlugin({ ignore: /.*pages.*/ }),
     new MiniCssExtractPlugin(),
   ],
 };

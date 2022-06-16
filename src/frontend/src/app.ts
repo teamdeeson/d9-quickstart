@@ -1,7 +1,6 @@
-import myFooter from './components/myFooter';
+import footer from './components/footer';
 
 document.addEventListener('DOMContentLoaded', () => {
   console.log('DOM fully loaded and parsed');
-
-  myFooter();
+  footer();
 });

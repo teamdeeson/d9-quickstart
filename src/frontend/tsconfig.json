@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "lib": ["DOM", "es2019"],
+    "jsx": "preserve"
+  },
+  "include": ["src/**/*"]
+}
