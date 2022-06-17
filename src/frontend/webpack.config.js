@@ -1,6 +1,7 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const WriteFilePlugin = require('write-file-webpack-plugin');
-const DrupalTemplatePlugin = require('deeson-webpack-config-starter/drupal-templates-webpack-plugin');
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+// const DrupalTemplatePlugin = require('deeson-webpack-config-starter/drupal-templates-webpack-plugin');
 
 const path = require('path');
 
@@ -9,7 +10,7 @@ const config = {
     app: './src/app.ts',
   },
   mode: 'development',
-  devtool: '#source-map',
+  devtool: 'eval-source-map',
   output: {
     path: path.resolve(process.cwd(), 'assets'),
     publicPath: '/themes/custom/deeson_frontend_framework/assets/',
@@ -40,9 +41,10 @@ const config = {
     rules: [
       {
         test: /\.ts$/,
+        use: [{ loader: 'babel-loader' }, { loader: 'ts-loader' }],
         exclude: /(node_modules)/,
-        loader: 'babel-loader',
       },
+
       {
         test: /\.scss$/,
         use: [
@@ -106,6 +108,15 @@ const config = {
         loader: 'url-loader',
         options: { limit: 10000, mimetype: 'application/octet-stream' },
       },
+    ],
+  },
+
+  resolve: {
+    extensions: ['.tsx', '.ts', '.js'],
+    plugins: [
+      new TsconfigPathsPlugin({
+        configFile: path.resolve(__dirname, './tsconfig.json'),
+      }),
     ],
   },
   plugins: [
